@@ -40,7 +40,7 @@ return (
                                 size:'sm',
                                 className:'hidden sm:flex items-center gap-1'
                                 })}>
-                                Start Monitoring
+                                Get safe route
                                 <ArrowRight className="ml-1.5 h-5 w-5"/>
                             </Link>
                         </>
@@ -69,7 +69,7 @@ return (
                                 size:'sm',
                                 className:'hidden sm:flex items-center gap-1'
                                 })}>
-                            Realtime Updates
+                            Read Docs
                                 <ArrowRight className="ml-1.5 h-5 w-5"/>
                             </Link> 
                         </>

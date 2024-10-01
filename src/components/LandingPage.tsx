@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { FloatingNav } from "./ui/floating-navbar";
+import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
+import { TypewriterEffect } from "./ui/typewriter-effect";
 import { 
   Heart, Activity, Video, Moon, AlertTriangle, Brain, 
   Users, TrendingUp, DollarSign, Smile, Stethoscope, Home,
@@ -100,8 +103,43 @@ export default function LandingPage() {
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8']
 
+  const navItems = [
+    {
+      name: "Home",
+      link: "/",
+      icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" />,
+    },
+    {
+      name: "About",
+      link: "/about",
+      icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" />,
+    },
+    {
+      name: "Contact",
+      link: "/contact",
+      icon: (
+        <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />
+      ),
+    },
+  ];
+
+  const words = [
+    { text: "AEGIS" , className: "text-blue-500 dark:text-blue-500"},
+    { text: "AI" , className: "text-blue-500 dark:text-blue-500"},
+    { text: ":Your" },
+    { text: "Smart" },
+    { text: "Guardian" },
+    { text: "for" },
+    { text: "Every" },
+    { text: "Step" }
+  ];
+
   return (
+    
     <div className="flex flex-col min-h-screen font-sans ">
+        <div className="relative  w-full">
+          <FloatingNav navItems={navItems} />
+        </div>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         body {
@@ -132,25 +170,21 @@ export default function LandingPage() {
         </nav>
       </header> */}
       <main className="flex-1 text-gray-700">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-60  bg-gradient-to-r from-blue-100 via-blue-50 to-white">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                  Revolutionizing ICU Care with AI
-                </h1>
-                <p className="mx-auto max-w-[700px] text-gray-600 md:text-xl">
-                  CriticalLink: Step Down ICUs - Transforming healthcare with low-cost, high-efficiency AI-powered monitoring.
-                </p>
-              </div>
-              <div className="space-x-4">
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">Get Started</Button>
-                <Button variant="outline">Learn More</Button>
-              </div>
-            </div>
-          </div>
-        </section>
-        
+      <div className="flex flex-col items-center justify-center h-[40rem] ">
+      <p className="text-neutral-600 dark:text-neutral-200 text-2xl mb-10">
+      Revolutionizing ICU Care with AI
+      </p>
+
+      <TypewriterEffect words={words} />
+      <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 space-x-0 md:space-x-4 mt-10">
+        <button className="w-40 h-10 rounded-xl bg-black border dark:border-white border-transparent text-white text-sm">
+          Join now
+        </button>
+        <button className="w-40 h-10 rounded-xl bg-white text-black border border-black  text-sm">
+          Signup
+        </button>
+      </div>
+    </div>
         <section id="features" className="w-full py-12 md:py-24 lg:py-32  bg-white">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">Key Features</h2>
