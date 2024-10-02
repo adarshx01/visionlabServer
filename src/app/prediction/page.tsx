@@ -1,82 +1,97 @@
 'use client'
-import React, { useState } from 'react';
-import axios from 'axios';
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ShieldCheck, Users, Cog, PlayCircle } from "lucide-react";
 
-const RoboflowInference = () => {
-  const [imageUrl, setImageUrl] = useState('');
-  const [detections, setDetections] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const ROBOFLOW_API_KEY = 'rf_TwumwaJV3Hb5hFslGZr4mA017xc2'; // Replace with your actual Roboflow API key
-  const ROBOFLOW_MODEL = 'new_violence_dataset-vr4gq'; // Replace with your Roboflow model ID
-  const ROBOFLOW_VERSION = '1'; // Replace with the model version
-
-  const handleImageChange = (e) => {
-    setImageUrl(e.target.value);
-  };
-
-  const handleInference = async () => {
-    if (!imageUrl) {
-      setError('Please provide a valid image URL');
-      return;
-    }
-
-    setError('');
-    setLoading(true);
-
-    try {
-      const response = await axios.post(
-        `https://detect.roboflow.com/${ROBOFLOW_MODEL}/${ROBOFLOW_VERSION}`,
-        {},
-        {
-          params: {
-            api_key: ROBOFLOW_API_KEY,
-            image: imageUrl,
-          },
-        }
-      );
-
-      const predictions = response.data.predictions;
-      setDetections(predictions);
-    } catch (err) {
-      setError('Error performing inference: ' + err.message);
-    } finally {
-      setLoading(false);
-    }
+export default function CCTVAnalysis() {
+  const router = useRouter();
+  
+  const changePage = () => {
+    // Ideally, change this to a route within your Next.js app
+    router.push("http://127.0.0.1:5500/womensafety/src/cctv_model/index.html"); // Example route in Next.js app
   };
 
   return (
-    <div>
-      <h1>Roboflow Object Detection Inference</h1>
+    <div className="container mx-auto px-4 py-8">
+      <header className="text-center mb-12">
+        <h1 className="text-4xl font-bold mb-4">AEGIS AI CCTV Analysis</h1>
+        <p className="text-xl text-muted-foreground">
+          Advanced surveillance analysis for enhanced security and insights
+        </p>
+      </header>
 
-      <input
-        type="text"
-        placeholder="Enter Image URL"
-        value={imageUrl}
-        onChange={handleImageChange}
-      />
-      <button onClick={handleInference} disabled={loading}>
-        {loading ? 'Running Inference...' : 'Run Inference'}
-      </button>
+      <div className="flex justify-center mb-12">
+        <Button size="lg" onClick={changePage} className="text-lg px-8 py-6">
+          <PlayCircle className="mr-2 h-6 w-6" /> Start Analysing 
+        </Button>
+      </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <div className="grid md:grid-cols-3 gap-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <ShieldCheck className="mr-2 h-6 w-6" />
+              Best Use Cases
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Large-scale public event security monitoring</li>
+              <li>Retail loss prevention and customer behavior analysis</li>
+              <li>Industrial safety compliance and hazard detection</li>
+              <li>Smart city traffic management and urban planning</li>
+              <li>Critical infrastructure protection and anomaly detection</li>
+            </ul>
+          </CardContent>
+        </Card>
 
-      {detections.length > 0 && (
-        <div>
-          <h2>Detections:</h2>
-          <ul>
-            {detections.map((detection, index) => (
-              <li key={index}>
-                Class: {detection.class} - Confidence: {detection.confidence} - 
-                Bounding Box: [{detection.x}, {detection.y}, {detection.width}, {detection.height}]
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Users className="mr-2 h-6 w-6" />
+              Proper Users
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Security professionals and law enforcement agencies</li>
+              <li>Retail and business operations managers</li>
+              <li>Industrial safety officers and compliance managers</li>
+              <li>Urban planners and city administrators</li>
+              <li>Critical infrastructure operators and security teams</li>
+              <li>Event organizers and venue management personnel</li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Cog className="mr-2 h-6 w-6" />
+              How It Works
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ol className="list-decimal pl-5 space-y-2">
+              <li>Connect AEGIS AI to your existing CCTV infrastructure</li>
+              <li>Our advanced AI algorithms process video feeds in real-time</li>
+              <li>Machine learning models detect and classify objects, people, and behaviors</li>
+              <li>Anomaly detection flags unusual patterns or potential security threats</li>
+              <li>Real-time alerts are sent to designated personnel for immediate action</li>
+              <li>Comprehensive analytics and reports are generated for long-term insights</li>
+            </ol>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="mt-12 text-center">
+        <p className="text-muted-foreground">
+          AEGIS AI: Empowering security professionals with cutting-edge CCTV analysis technology.
+          <br />
+          Start your journey towards enhanced surveillance and data-driven security today.
+        </p>
+      </div>
     </div>
   );
-};
-
-export default RoboflowInference;
+}

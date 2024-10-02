@@ -210,16 +210,25 @@ export default function LandingPage() {
   description="Discreet smartwatch with communication features for direct contact with emergency services, ensuring help is always close."
 />
 </Link>
+<Link href="/integrate">
 <FeatureCard
   icon={<AlertTriangle className="h-8 w-8 text-red-600" />}
   title="Direction Notifier"
   description="Utilizes Google Maps for safe routing, providing alerts and alternative paths to avoid high-risk areas."
 />
+</Link>
 <Link href="/grievance">
 <FeatureCard
   icon={<Users className="h-8 w-8 text-primary" />}
   title="AI Chatbot Support"
   description="24/7 AI powered conversation for grievance Registering"
+/>
+</Link>
+<Link href="/authoritykiosk">
+<FeatureCard
+  icon={<Users className="h-8 w-8 text-primary" />}
+  title="Police-Dashboard"
+  description="Police-Dashboard"
 />
 </Link>
 
