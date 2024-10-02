@@ -25,7 +25,7 @@ AegisAI is a Next.js-based project aimed at enhancing personal safety, particula
 ## Getting Started
 
 ##using our own deplaoyed ML-model api for situation and scenario based route prediction by giving it a roadSafety Score.
-
+['https://testmapmlapi.onrender.com/predict_safety']
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
