@@ -67,24 +67,24 @@ export default function LandingPage() {
   ]
 
   const patientMetricsData = [
-    { time: '00:00', heartRate: 72, breathingRate: 14, oxygenLevel: 98 },
-    { time: '04:00', heartRate: 68, breathingRate: 12, oxygenLevel: 97 },
-    { time: '08:00', heartRate: 70, breathingRate: 13, oxygenLevel: 98 },
-    { time: '12:00', heartRate: 75, breathingRate: 15, oxygenLevel: 99 },
-    { time: '16:00', heartRate: 73, breathingRate: 14, oxygenLevel: 98 },
-    { time: '20:00', heartRate: 71, breathingRate: 13, oxygenLevel: 97 },
+    { time: '00:00', After: 72, Before: 37},
+    { time: '04:00', After: 68, Before: 36 },
+    { time: '08:00', After: 70, Before: 44},
+    { time: '12:00', After: 75, Before: 30},
+    { time: '16:00', After: 73, Before: 32},
+    { time: '20:00', After: 71, Before: 39 },
   ]
 
   const sleepPatternData = [
-    { time: '22:00', deepSleep: 0, lightSleep: 0, awake: 100 },
-    { time: '23:00', deepSleep: 20, lightSleep: 70, awake: 10 },
-    { time: '00:00', deepSleep: 60, lightSleep: 35, awake: 5 },
-    { time: '01:00', deepSleep: 80, lightSleep: 15, awake: 5 },
-    { time: '02:00', deepSleep: 70, lightSleep: 25, awake: 5 },
-    { time: '03:00', deepSleep: 50, lightSleep: 45, awake: 5 },
-    { time: '04:00', deepSleep: 30, lightSleep: 60, awake: 10 },
-    { time: '05:00', deepSleep: 10, lightSleep: 70, awake: 20 },
-    { time: '06:00', deepSleep: 0, lightSleep: 30, awake: 70 },
+    { time: '22:00', action: 0, victim : 0, attacker: 100 },
+    { time: '23:00', action: 20, victim: 70, attacker: 10 },
+    { time: '00:00', action: 60, victim: 35, attacker: 5 },
+    { time: '01:00', action: 80, victim: 15, attacker: 5 },
+    { time: '02:00', action: 70, victim: 25, attacker: 5 },
+    { time: '03:00', action: 50, victim: 45, attacker: 5 },
+    { time: '04:00', action : 30, victim: 60, attacker: 10 },
+    { time: '05:00', action: 10, victim: 70, attacker: 20 },
+    { time: '06:00', action: 0, victim: 30, attacker: 70 },
   ]
 
   const icuImpactData = [
@@ -260,16 +260,16 @@ export default function LandingPage() {
           <div className="container px-4 md:px-6">
             <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl text-center mb-4">
               <span className="bg-gradient-to-r from-primary to-blue-600 text-transparent bg-clip-text">
-                Advanced Analytics
+                Our Imapact
               </span>
             </h2>
             <p className="text-xl text-center text-gray-600 mb-12">
-              Empowering healthcare with data-driven insights
+              Here are some stats
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div>
-                <h3 className="text-2xl font-bold mb-4 text-center">Patient Vitals Over 24 Hours</h3>
+                <h3 className="text-2xl font-bold mb-4 text-center">Before vs Now Women security  </h3>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={patientMetricsData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -277,14 +277,14 @@ export default function LandingPage() {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="heartRate" stroke="#8884d8" name="Heart Rate" />
-                    <Line type="monotone" dataKey="breathingRate" stroke="#82ca9d" name="Breathing Rate" />
-                    <Line type="monotone" dataKey="oxygenLevel" stroke="#ffc658" name="Oxygen Level" />
+                    <Line type="monotone" dataKey="After" stroke="#8884d8" name="Heart Rate" />
+                    <Line type="monotone" dataKey="Before" stroke="#82ca9d" name="Breathing Rate" />
+
                   </LineChart>
                 </ResponsiveContainer>
               </div>
               <div>
-                <h3 className="text-2xl font-bold mb-4 text-center">Sleep Pattern Analysis</h3>
+                <h3 className="text-2xl font-bold mb-4 text-center">CCTV analysis</h3>
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={sleepPatternData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -292,179 +292,47 @@ export default function LandingPage() {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Area type="monotone" dataKey="deepSleep" stackId="1" stroke="#8884d8" fill="#8884d8" name="Deep Sleep" />
-                    <Area type="monotone" dataKey="lightSleep" stackId="1" stroke="#82ca9d" fill="#82ca9d" name="Light Sleep" />
-                    <Area type="monotone" dataKey="awake" stackId="1" stroke="#ffc658" fill="#ffc658" name="Awake" />
+                    <Area type="monotone" dataKey="action" stackId="1" stroke="#8884d8" fill="#8884d8" name="action" />
+                    <Area type="monotone" dataKey="victim" stackId="1" stroke="#82ca9d" fill="#82ca9d" name="victim" />
+                    <Area type="monotone" dataKey="attacker" stackId="1" stroke="#ffc658" fill="#ffc658" name="attacker" />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              <div>
-                <h3 className="text-2xl font-bold mb-4 text-center">Video Analytics: Patient Movement</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <ScatterChart>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" dataKey="x" name="Time" unit="h" />
-                    <YAxis type="number" dataKey="y" name="Movement" unit="%" />
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                    <Scatter name="Movement" data={[
-                      { x: 0, y: 20 }, { x: 2, y: 10 }, { x: 4, y: 15 },
-                      { x: 6, y: 30 }, { x: 8, y: 25 }, { x: 10, y: 40 },
-                      { x: 12, y: 35 }, { x: 14, y: 20 }, { x: 16, y: 30 },
-                      { x: 18, y: 25 }, { x: 20, y: 15 }, { x: 22, y: 20 },
-                    ]} fill="#8884d8" />
-                  </ScatterChart>
-                </ResponsiveContainer>
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-4 text-center">3D Plot: ICU Model Impact</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <ScatterChart>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" dataKey="x" name="Recovery Rate" unit="%" />
-                    <YAxis type="number" dataKey="y" name="Cost Reduction" unit="%" />
-                    <ZAxis type="number" dataKey="z" range={[60, 400]} name="Patient Satisfaction" unit="%" />
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                    <Scatter name="Traditional ICU" data={[
-                      { x: 70, y: 0, z: 200 }
-                    ]} fill="#8884d8" />
-                    <Scatter name="CriticalLink ICU" data={[
-                      { x: 85, y: 30, z: 350 }
-                    ]} fill="#82ca9d" />
-                  </ScatterChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+
           </div>
         </section>
 
-        <section id="impact" className="w-full py-12 md:py-24 lg:py-32 bg-white">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl text-center mb-4">
-              <span className="bg-gradient-to-r from-primary to-blue-600 text-transparent bg-clip-text">
-                Our Impact
-              </span>
-            </h2>
-            <p className="text-xl text-center text-gray-600 mb-12">
-              Transforming ICU care with measurable results
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              <div>
-                <h3 className="text-2xl font-bold mb-4 text-center">ICU Performance Comparison</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={icuPerformanceData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="day" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="traditional" stroke="#8884d8" name="Traditional ICU" />
-                    <Line type="monotone" dataKey="criticalLink" stroke="#82ca9d" name="CriticalLink ICU" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-4 text-center">Emergency Response Time (minutes)</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={emergencyResponseData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="scenario" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="responseTime" fill="#8884d8" name="Response Time" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+        
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-2xl font-bold mb-4 text-center">Cost Reduction Breakdown</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={costReductionData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="reduction"
-                      label={({ category, percent }) => `${category} ${(percent * 100).toFixed(0)}%`}
-                    >
-                      {costReductionData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-4 text-center">Market Growth</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={marketGrowthData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="year" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} name="Market Value" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">What Healthcare Providers Say</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <TestimonialCard
-                quote="CriticalLink has transformed our ICU operations. We're able to provide better care to more patients while significantly reducing costs."
-                author="Dr. Priya Sharma"
-                role="Chief of Intensive Care, Metro Hospital, Mumbai"
-              />
-              <TestimonialCard
-                quote="The AI-powered early warning system has been a game-changer. We're catching complications before they become critical, saving lives in the process."
-                author="Dr. Rajesh Patel"
-                role="Head of Cardiology, City Medical Center, Delhi"
-              />
-            </div>
-          </div>
-        </section>
-
+        
         <section id="faq" className="w-full py-12 md:py-24 lg:py-32 bg-white">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">Frequently Asked Questions</h2>
             <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
               <AccordionItem value="item-1">
-                <AccordionTrigger>How does CriticalLink improve patient care?</AccordionTrigger>
+                <AccordionTrigger>What is Aegis AI, and how does it help improve personal safety?</AccordionTrigger>
                 <AccordionContent>
-                  CriticalLink uses AI-powered monitoring to predict complications, enable early interventions, and optimize resource allocation. This leads to better patient outcomes, reduced ICU stays, and more efficient healthcare delivery.
+                Aegis AI uses AI-driven technology to analyze risks, send out emergency alerts, and connect you with trusted contacts or nearby users for quick assistance.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
-                <AccordionTrigger>Is CriticalLink compatible with existing hospital systems?</AccordionTrigger>
+                <AccordionTrigger>How does the SOS alert system work?</AccordionTrigger>
                 <AccordionContent>
-                  Yes, CriticalLink is designed to integrate seamlessly with existing hospital information systems and medical devices. Our team provides full support for integration and staff training.
+                When the SOS button is triggered, the app sends your real-time location, along with an alert message, to your trusted contacts and any Aegis AI users in the vicinity. 
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
-                <AccordionTrigger>How does CriticalLink ensure patient privacy?</AccordionTrigger>
+                <AccordionTrigger>How does Aegis AI detect and notify users about potential risks?</AccordionTrigger>
                 <AccordionContent>
-                  CriticalLink adheres to strict data protection standards, including HIPAA compliance. All patient data is encrypted, and access is restricted to authorized healthcare providers only.
+                Aegis AI uses AI-powered algorithms and real-time data to assess the user's environment, identifying potential threats such as entering high-risk areas, nearby criminal activities, or other safety hazards.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-4">
-                <AccordionTrigger>Can CriticalLink be used for home care?</AccordionTrigger>
+                <AccordionTrigger>Can I use Aegis AI even if I don’t have access to the internet?</AccordionTrigger>
                 <AccordionContent>
-                  Yes, CriticalLink offers home care solutions that allow for remote monitoring of patients. This enables early discharge from hospitals while maintaining high-quality care and reducing the risk of readmissions.
+                Yes, Aegis AI is designed to offer limited functionality even in offline mode. 
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -476,10 +344,10 @@ export default function LandingPage() {
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Ready to Transform Your ICU?
+                  Contact Us 
                 </h2>
                 <p className="mx-auto max-w-[600px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Join the healthcare revolution. Schedule a demo today and see how CriticalLink can enhance patient care in your facility.
+                To resolve any issue feel free to contact us 
                 </p>
               </div>
               <div className="w-full max-w-sm space-y-2">
