@@ -1,11 +1,14 @@
 'use client'
 import React, { useState } from 'react'
+import { redirect } from "next/navigation";
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { FloatingNav } from "./ui/floating-navbar";
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
 import { TypewriterEffect } from "./ui/typewriter-effect";
+
+import { useRouter } from 'next/navigation' 
 import { 
   Heart, Activity, Video, Moon, AlertTriangle, Brain, 
   Users, TrendingUp, DollarSign, Smile, Stethoscope, Home,
@@ -23,8 +26,13 @@ import {
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, ZAxis
 } from 'recharts'
 
+
 export default function LandingPage() {
+
+
   const [email, setEmail] = useState('')
+  const router = useRouter()
+  
 
   const icuPerformanceData = [
     { day: 1, traditional: 70, criticalLink: 85 },
@@ -35,7 +43,9 @@ export default function LandingPage() {
     { day: 6, traditional: 73, criticalLink: 91 },
     { day: 7, traditional: 69, criticalLink: 93 },
   ]
-
+  const handledash =()=>{
+    router.push("/dashboard");
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -123,17 +133,17 @@ export default function LandingPage() {
     },
   ];
 
-  const words = [
-    { text: "AEGIS" , className: "text-blue-500 dark:text-blue-500"},
-    { text: "AI" , className: "text-blue-500 dark:text-blue-500"},
-    { text: ":Your" },
-    { text: "Smart" },
-    { text: "Guardian" },
-    { text: "for" },
-    { text: "Every" },
-    { text: "Step" }
-  ];
 
+    const words = [
+      { text: "AEGIS " ,className:"text-blue-500 dark:text-blue-500"},
+      {text:"AI:",className:"text-blue-500 dark:text-blue-500"},
+      { text: "Your" },
+      { text: "Smart" },
+      { text: "Guardian" },
+      { text: "for" },
+      { text: "Every" },
+      { text: "Step" }
+    ];
   return (
     
     <div className="flex flex-col min-h-screen font-sans ">
@@ -172,83 +182,67 @@ export default function LandingPage() {
       <main className="flex-1 text-gray-700">
       <div className="flex flex-col items-center justify-center h-[40rem] ">
       <p className="text-neutral-600 dark:text-neutral-200 text-2xl mb-10">
-      Revolutionizing ICU Care with AI
+      AI AllTogether for a Safer Tomorrow
       </p>
-
       <TypewriterEffect words={words} />
       <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 space-x-0 md:space-x-4 mt-10">
-        <button className="w-40 h-10 rounded-xl bg-black border dark:border-white border-transparent text-white text-sm">
-          Join now
+        <button className="w-40 h-10 rounded-xl bg-black border dark:border-white border-transparent text-white text-sm" onClick={handledash}>
+          Get Started 
         </button>
-        <button className="w-40 h-10 rounded-xl bg-white text-black border border-black  text-sm">
-          Signup
-        </button>
+
       </div>
     </div>
         <section id="features" className="w-full py-12 md:py-24 lg:py-32  bg-white">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">Key Features</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              <FeatureCard
-                icon={<Activity className="h-8 w-8 text-blue-600" />}
-                title="AI-Powered Monitoring"
-                description="Continuous tracking of vital signs with predictive analytics."
-              />
-              <FeatureCard
-                icon={<Video className="h-8 w-8 text-red-400" />}
-                title="Video Analysis"
-                description="AI-driven monitoring for patient movement and behavior."
-              />
-              <FeatureCard
-                icon={<AlertTriangle className="h-8 w-8 text-red-600" />}
-                title="Early Warning System"
-                description="Predict and prevent complications before they occur."
-              />
-              <FeatureCard
-                icon={<Users className="h-8 w-8 text-primary" />}
-                title="Resource Optimization"
-                description="Efficient allocation of nursing hours and ICU usage."
-              />
-              <FeatureCard
-                icon={<Smile className="h-8 w-8 text-pink-400" />}
-                title="AI Chatbot Support"
-                description="24/7 AI-powered conversation for patient mental health."
-              />
-              <FeatureCard
-                icon={<Home className="h-8 w-8 text-orange-400" />}
-                title="Home Care Integration"
-                description="Extend monitoring capabilities to home scenarios."
-              />
-              <FeatureCard
-                icon={<Zap className="h-8 w-8 text-green-400" />}
-                title="Real-time Alerts"
-                description="Instant notifications for critical changes in patient status."
-              />
-              <FeatureCard
-                icon={<Shield className="h-8 w-8 text-red-500" />}
-                title="Data Security"
-                description="HIPAA-compliant encryption and access control."
-              />
-              <FeatureCard
-                icon={<Clock className="h-8 w-8 text-violet-500" />}
-                title="Predictive Analytics"
-                description="Forecast patient outcomes and resource needs."
-              />
-              <FeatureCard
-                icon={<Smartphone className="h-8 w-8 text-black" />}
-                title="Mobile Access"
-                description="Secure remote access for healthcare providers."
-              />
-              <FeatureCard
-                icon={<Clipboard className="h-8 w-8 text-primary" />}
-                title="Automated Reporting"
-                description="Generate comprehensive patient care reports."
-              />
-              <FeatureCard
-                icon={<HeartPulse className="h-8 w-8 text-red-400" />}
-                title="Customizable Alerts"
-                description="Tailor alert thresholds to individual patient needs."
-              />
+              <Link href="/location">
+            <FeatureCard
+  icon={<Activity className="h-8 w-8 text-blue-600" />}
+  title="AI-Powered SOS Alerts"
+  description="Automatically detects distress and triggers SOS alerts via voice command or gesture, notifying contacts and authorities instantly."
+/>
+</Link>
+<Link href="/mcu">
+<FeatureCard
+  icon={<Video className="h-8 w-8 text-red-400" />}
+  title="Smart Wearable Technology"
+  description="Discreet smartwatch with communication features for direct contact with emergency services, ensuring help is always close."
+/>
+</Link>
+<FeatureCard
+  icon={<AlertTriangle className="h-8 w-8 text-red-600" />}
+  title="Direction Notifier"
+  description="Utilizes Google Maps for safe routing, providing alerts and alternative paths to avoid high-risk areas."
+/>
+<Link href="/grievance">
+<FeatureCard
+  icon={<Users className="h-8 w-8 text-primary" />}
+  title="AI Chatbot Support"
+  description="24/7 AI powered conversation for grievance Registering"
+/>
+</Link>
+
+
+
+<FeatureCard
+  icon={<Home className="h-8 w-8 text-orange-400" />}
+  title="Mobile App Integration"
+  description="Central hub for live tracking, resource connections, and automated incident reporting."
+/>
+<Link href="/analyzer">
+<FeatureCard
+  icon={<Zap className="h-8 w-8 text-green-400" />}
+  title="Social Media Analyzer "
+  description="A Social Media Analyzer for Suspicious Activity Detection is a tool designed to scrutinize social media accounts and identify potentially harmful or abnormal behavior."
+/>
+</Link>
+<FeatureCard
+  icon={<Shield className="h-8 w-8 text-red-500" />}
+  title="Enhanced Safety"
+  description="Combines advanced tech for personal safety and promotes social change to improve community security."
+/>
+
             </div>
           </div>
         </section>

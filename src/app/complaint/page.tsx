@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { storage, db } from '../../lib/firebase'; // Import Firebase
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // For file storage
+import { collection, addDoc } from 'firebase/firestore'; // For Firestore
 
 export default function RaiseComplaint() {
   const [proofFile, setProofFile] = useState<File | null>(null);
@@ -19,6 +22,9 @@ export default function RaiseComplaint() {
     priorIncidentDescription: '',
     preferredAction: '',
     securityLevel: 'private',
+    proofFileUrl: '', // To store the file URL
+    status: 'Complaint Raised', // Default status
+    complaintNumber: '' // To store the unique complaint number
   });
 
   const router = useRouter();
@@ -36,28 +42,40 @@ export default function RaiseComplaint() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    // Form Data Handling Logic
-    const formDataToSubmit = new FormData();
-    Object.keys(formData).forEach((key) => formDataToSubmit.append(key, formData[key]));
+    // Create a unique complaint number
+    const complaintNumber = `C-${Date.now()}`; // Generates a complaint number based on the current timestamp
 
-    if (proofFile) {
-      formDataToSubmit.append('proof', proofFile);
-    }
+    // Create a Firestore complaint document
+    const complaintData = {
+      ...formData,
+      createdAt: new Date(),
+      status: 'Complaint Raised', // Set status
+      complaintNumber, // Add complaint number
+    };
 
     try {
-      const response = await fetch('/api/raise-complaint', {
-        method: 'POST',
-        body: formDataToSubmit,
-      });
+      let proofFileUrl = '';
 
-      if (response.ok) {
-        alert('Your complaint has been successfully submitted.');
-        router.push('/complaint-success');
-      } else {
-        console.error('Complaint submission failed:', response.statusText);
+      if (proofFile) {
+        // Upload file to Firebase Storage
+        const fileRef = ref(storage, `complaints/${proofFile.name}`); // Use just the file name or add an ID for unique paths
+        await uploadBytes(fileRef, proofFile);
+        
+        // Get the download URL for the uploaded file
+        proofFileUrl = await getDownloadURL(fileRef);
       }
+
+      // Save the proof file URL in the complaint data
+      complaintData.proofFileUrl = proofFileUrl;
+
+      // Add the complaint document with proof file URL, status, and complaint number to Firestore
+      await addDoc(collection(db, 'complaints'), complaintData);
+
+      alert(`Your complaint has been successfully submitted. Your complaint number is ${complaintNumber}.`);
+      router.push('/status');
     } catch (error) {
       console.error('Error during submission:', error);
+      alert('There was an error submitting your complaint. Please try again.');
     }
   };
 
@@ -237,8 +255,7 @@ export default function RaiseComplaint() {
                 value="private"
                 checked={formData.securityLevel === 'private'}
                 onChange={handleInputChange}
-              />
-              Private (Only authorities)
+              /> Private
             </label>
             <label>
               <input
@@ -247,18 +264,13 @@ export default function RaiseComplaint() {
                 value="public"
                 checked={formData.securityLevel === 'public'}
                 onChange={handleInputChange}
-              />
-              Public
+              /> Public
             </label>
           </div>
         </div>
 
         {/* Submit Button */}
-        <div className="text-center">
-          <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-            Submit Complaint
-          </Button>
-        </div>
+        <Button type="submit" className="w-full mt-4">Submit Complaint</Button>
       </form>
     </div>
   );

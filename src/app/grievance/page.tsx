@@ -2,14 +2,19 @@
 
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-
+import { useRouter } from 'next/navigation'; 
+import Link from 'next/link';
 export default function ChatPage() {
-  const router= useRouter()
+  const router = useRouter();
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [consentGiven, setConsentGiven] = useState(false);
   const [declineMessage, setDeclineMessage] = useState(''); // State for decline message
+
+  const nameRegex = /(?<=name is\s)([A-Za-z\s\'\-]+)/;
+  const phoneRegex = /(?<=phone number is\s)(\+\d{1,3}\s\d{5}\s\d{5})/;
+  const locationRegex = /(?<=live at\s)([\d\sA-Za-z.,\-]+)/;
+  const dateRegex = /(?<=on\s)(\d{1,2}\s[A-Za-z]+\s\d{4}\sat\s\d{2}:\d{2}:\d{2}\sUTC\+\d{1,2})/;
 
   const handleSpeechInput = async () => {
     const recognition = new (window as any).webkitSpeechRecognition();
@@ -63,9 +68,9 @@ export default function ChatPage() {
     }
   };
 
-  const handlestatus = () =>{
+  const handlestatus = () => {
     router.push("/status");
-  }
+  };
 
   const speakMessage = (message: string) => {
     console.log('Speaking message');
@@ -80,19 +85,60 @@ export default function ChatPage() {
   const exportConversationAsJSON = () => {
     if (messages.length === 0) {
       alert('First Provide the incident report and data !!!');
-    } else {
-      const summary = {
-        conversation: messages.map((msg, index) => ({
-          id: index + 1,
-          role: msg.role,
-          message: msg.content,
-        })),
-        totalMessages: messages.length,
-      };
-      console.log('Conversation Summary:', JSON.stringify(summary, null, 2));
-      router.push("/complaint");
+      return;
     }
+  
+    // Initialize empty values
+    let name = '';
+    let phone = '';
+    let location = '';
+    let incidentDate = '';
+  
+    // Extract details from the last message, assuming it contains the summary report
+    const lastMessage = messages[messages.length - 1].content;
+  
+    // Apply regex to extract information from the last message
+    const nameMatch = lastMessage.match(nameRegex);
+    if (nameMatch) name = nameMatch[0];
+  
+    const phoneMatch = lastMessage.match(phoneRegex);
+    if (phoneMatch) phone = phoneMatch[0];
+  
+    const locationMatch = lastMessage.match(locationRegex);
+    if (locationMatch) location = locationMatch[0];
+  
+    const dateMatch = lastMessage.match(dateRegex);
+    if (dateMatch) incidentDate = dateMatch[0];
+  
+    const summary = {
+      conversation: messages.map((msg, index) => ({
+        id: index + 1,
+        role: msg.role,
+        message: msg.content,
+      })),
+      totalMessages: messages.length,
+      name,
+      phone,
+      location,
+      incidentDate,
+    };
+  
+    console.log('Conversation Summary:', JSON.stringify(summary, null, 2));
+    consoe.log(name, phone , location, incidentDate)
+  
+    // Transfer data to complaint page using router push with query params
+    // router.push({
+    //   pathname: '/complaint',
+    //   query: {
+    //     name,
+    //     phone,
+    //     location,
+    //     incidentDate,
+    //     summary: JSON.stringify(summary.conversation),
+    //   },
+    // });
   };
+  
 
   // Consent Handlers
   const handleConsent = () => {
@@ -147,9 +193,11 @@ export default function ChatPage() {
             <Button onClick={handleSpeechInput} disabled={loading}>
               {loading ? 'Listening...' : 'Speak'}
             </Button>
+            <Link href="/complaint">
             <Button onClick={exportConversationAsJSON}>
               Raise Complaint
             </Button>
+            </Link>
             <Button onClick={handlestatus}>Check Complaint status</Button>
           </div>
         </>

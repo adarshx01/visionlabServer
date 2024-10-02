@@ -15,8 +15,7 @@ return (
         <MaxWidthWrapper>
             <div className='flex h-14 items-center justify-between border-b border-zinc-200'>
                 <Link href='/' className='flex z-40 font-semibold'>
-                    <Brain className="h-6 w-6 text-primary mx-1" />
-                    Critical<span className='text-green-300'>Link</span>
+                    AEGIS AI
                 </Link>
                 <div className='h-full flex items-center space-x-4'>
                     {user?(
@@ -40,7 +39,7 @@ return (
                                 size:'sm',
                                 className:'hidden sm:flex items-center gap-1'
                                 })}>
-                                Get safe route
+                                Get Safe Routes
                                 <ArrowRight className="ml-1.5 h-5 w-5"/>
                             </Link>
                         </>
