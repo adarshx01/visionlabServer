@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { storage, db } from '../../lib/firebase'; // Import Firebase
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // For file storage
-import { collection, addDoc } from 'firebase/firestore'; // For Firestore
+import { useRouter, useSearchParams } from 'next/navigation';
+import { storage, db } from '../../lib/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc } from 'firebase/firestore';
 
 export default function RaiseComplaint() {
   const [proofFile, setProofFile] = useState<File | null>(null);
@@ -22,12 +22,64 @@ export default function RaiseComplaint() {
     priorIncidentDescription: '',
     preferredAction: '',
     securityLevel: 'private',
-    proofFileUrl: '', // To store the file URL
-    status: 'Complaint Raised', // Default status
-    complaintNumber: '' // To store the unique complaint number
+    proofFileUrl: '',
+    status: 'Complaint Raised',
+    complaintNumber: ''
   });
+  const [complaintSubmitted, setComplaintSubmitted] = useState(false);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const storeComplaintData = async (complaintData: any) => {
+      try {
+        const docRef = await addDoc(collection(db, 'complaints'), complaintData);
+        setComplaintSubmitted(true);
+        alert(`Your complaint has been successfully submitted. Your complaint number is ${complaintData.complaintNumber}.`);
+      } catch (error) {
+        console.error('Error storing complaint:', error);
+        alert('There was an error submitting your complaint. Please try again.');
+      }
+    };
+
+    const name = searchParams.get('name') || '';
+    const phone = searchParams.get('phone') || '';
+    const location = searchParams.get('location') || '';
+    const incidentDate = searchParams.get('incidentDate') || '';
+    const offenderName = searchParams.get('offenderName') || '';
+    const offenderContact = searchParams.get('offenderContact') || '';
+    const offenderLocation = searchParams.get('offenderLocation') || '';
+    const description = searchParams.get('description') || '';
+    const report = searchParams.get('report') || '';
+
+    if (name && phone && location && incidentDate) {
+      const complaintData = {
+        name,
+        contact: phone,
+        location,
+        incidentDate,
+        incidentDescription: description,
+        harasserDetails: `Name: ${offenderName}, Contact: ${offenderContact}, Location: ${offenderLocation}`,
+        priorIncidentDescription: report,
+        createdAt: new Date(),
+        status: 'Complaint Raised',
+        complaintNumber: `C-${Date.now()}`,
+      };
+      storeComplaintData(complaintData);
+    } else {
+      setFormData(prevData => ({
+        ...prevData,
+        name,
+        contact: phone,
+        location,
+        incidentDate,
+        incidentDescription: description,
+        harasserDetails: `Name: ${offenderName}, Contact: ${offenderContact}, Location: ${offenderLocation}`,
+        priorIncidentDescription: report,
+      }));
+    }
+  }, [searchParams]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -41,34 +93,31 @@ export default function RaiseComplaint() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (complaintSubmitted) {
+      alert('Your complaint has already been submitted.');
+      return;
+    }
 
-    // Create a unique complaint number
-    const complaintNumber = `C-${Date.now()}`; // Generates a complaint number based on the current timestamp
+    const complaintNumber = `C-${Date.now()}`;
 
-    // Create a Firestore complaint document
     const complaintData = {
       ...formData,
       createdAt: new Date(),
-      status: 'Complaint Raised', // Set status
-      complaintNumber, // Add complaint number
+      status: 'Complaint Raised',
+      complaintNumber,
     };
 
     try {
       let proofFileUrl = '';
 
       if (proofFile) {
-        // Upload file to Firebase Storage
-        const fileRef = ref(storage, `complaints/${proofFile.name}`); // Use just the file name or add an ID for unique paths
+        const fileRef = ref(storage, `complaints/${proofFile.name}`);
         await uploadBytes(fileRef, proofFile);
-        
-        // Get the download URL for the uploaded file
         proofFileUrl = await getDownloadURL(fileRef);
       }
 
-      // Save the proof file URL in the complaint data
       complaintData.proofFileUrl = proofFileUrl;
 
-      // Add the complaint document with proof file URL, status, and complaint number to Firestore
       await addDoc(collection(db, 'complaints'), complaintData);
 
       alert(`Your complaint has been successfully submitted. Your complaint number is ${complaintNumber}.`);
@@ -169,14 +218,14 @@ export default function RaiseComplaint() {
 
         {/* Harasser Details */}
         <div>
-          <label className="block font-bold mb-2" htmlFor="harasserDetails">Harasser Details (if known)</label>
-          <input
-            type="text"
+          <label className="block font-bold mb-2" htmlFor="harasserDetails">Harasser Details</label>
+          <textarea
             id="harasserDetails"
             name="harasserDetails"
             value={formData.harasserDetails}
             onChange={handleInputChange}
             className="w-full border rounded px-3 py-2"
+            rows={3}
           />
         </div>
 
@@ -200,7 +249,7 @@ export default function RaiseComplaint() {
             type="checkbox"
             name="priorIncidents"
             checked={formData.priorIncidents}
-            onChange={() => setFormData((prev) => ({ ...prev, priorIncidents: !formData.priorIncidents }))}
+            onChange={() => setFormData((prev) => ({ ...prev, priorIncidents: !prev.priorIncidents }))}
           />
           {formData.priorIncidents && (
             <textarea
@@ -209,6 +258,7 @@ export default function RaiseComplaint() {
               name="priorIncidentDescription"
               value={formData.priorIncidentDescription}
               onChange={handleInputChange}
+              rows={4}
             />
           )}
         </div>
@@ -275,3 +325,4 @@ export default function RaiseComplaint() {
     </div>
   );
 }
+
