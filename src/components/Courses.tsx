@@ -9,37 +9,37 @@ const courses = [
   {
     id: 1,
     title: "Mathematics",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/images/courses/math3.jpg",
     description: "Master mathematical concepts from basic arithmetic to advanced calculus"
   },
   {
     id: 2,
     title: "Physics",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/images/courses/phy3.jpg",
     description: "Explore the fundamental laws that govern the universe"
   },
   {
     id: 3,
     title: "Chemistry",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/images/courses/chem2.jpg",
     description: "Learn about matter, its properties, and transformations"
   },
   {
     id: 4,
     title: "Biology",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/images/courses/bio3.jpg",
     description: "Discover the science of life and living organisms"
   },
   {
     id: 5,
     title: "Computer Science",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/images/courses/cs2.jpg",
     description: "Learn programming, algorithms, and computational thinking"
   },
   {
     id: 6,
     title: "English",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/images/courses/eng.jpg",
     description: "Develop your language and communication skills"
   }
 ]
