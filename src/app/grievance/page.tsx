@@ -427,15 +427,10 @@ Description: ${description}`,
       ) : (
         <>
           <h1 className='mx-auto text-center font-extrabold text-2xl font-serif'>Related Complaint Registration </h1>
-          <div className="video-container mx-auto w-fit">
-            <video id="speakingVideo" width="320" height="240" muted autoPlay>
-              <source src="/Chatbot.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
+         
 
-          <div className="chat-box mx-72 px-8 py-4 max-h-96 min-h-96 rounded-3xl shadow-2xl shadow-lime-400 border-2 overflow-y-auto">
-            <p>
+          <div className="chat-box ml-8 mt-16 px-8 py-4 max-h-96 min-h-96 w-1/2 md:w-[900px] rounded-3xl shadow-2xl shadow-lime-400 border-2 overflow-y-auto">
+<p>
               <span className="border-2 rounded-lg px-2 py-1 inline-block bg-green-100">
                 <span className="font-extrabold">Bot: </span>Heyy , this is Aegis . How can I assist you!
               </span>
@@ -452,7 +447,7 @@ Description: ${description}`,
             ))}
           </div>
 
-          <div className="input-container my-10 text-center space-x-8">
+          <div className="input-container length-400 my-10 text-left space-x-8 ml-20">
             <Button onClick={toggleMode}>
               {isVoiceMode ? 'Switch to Text' : 'Switch to Voice'}
             </Button>
@@ -480,7 +475,7 @@ Description: ${description}`,
           </div>
 
           {isListening && (
-            <div className="text-center text-green-600">
+            <div className="text-left text-green-600 ml-20 ">
               Microphone is active - Please speak now
             </div>
           )}
