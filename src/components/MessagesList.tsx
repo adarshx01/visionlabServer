@@ -112,9 +112,16 @@ export const MessagesList = () => {
         );
       case "normalChat":
         return (
-          <p className={`text-4xl mt-2 ${message.answer.language === "Hindi" ? "font-hindi" : ""}`}>
-            {message.answer.text}
-          </p>
+          <>
+            <p className={`text-4xl mt-2 ${message.answer.language === "Hindi" ? "font-hindi" : ""}`}>
+              {message.answer.text}
+            </p>
+            {message.answer.language === "Hindi" && english && (
+              <p className="text-4xl mt-2 bg-clip-text text-transparent bg-gradient-to-br from-blue-300/90 to-white/90">
+                {message.englishTranslation}
+              </p>
+            )}
+          </>
         );
       default:
         return null;
@@ -146,7 +153,8 @@ export const MessagesList = () => {
         <div key={i} className="bg-black/30 p-6 rounded-xl">
           <div className="flex justify-between items-start">
             <div className="flex-grow">{renderMessage(message)}</div>
-            {message.mode === "hindiLearning" && (
+            {(message.mode === "hindiLearning" || 
+              (message.mode === "normalChat" && message.answer.language === "Hindi")) && (
               currentMessage === message ? (
                 <button
                   className="text-white/65"
@@ -205,4 +213,3 @@ export const MessagesList = () => {
     </div>
   );
 };
-

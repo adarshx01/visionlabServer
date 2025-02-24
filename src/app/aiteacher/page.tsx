@@ -1,9 +1,9 @@
-import { Experience } from "@/components/Experience";
+import { VRExperience } from "@/components/Experience";
 
 export default function Home() {
   return (
     <main className="h-screen min-h-screen">
-      <Experience />
+      <VRExperience />
     </main>
   );
 }

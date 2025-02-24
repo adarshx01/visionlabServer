@@ -2,8 +2,21 @@
 
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
+import { useAuth } from '@/hooks/useAuth'
+import { signOut } from 'firebase/auth'
+import { auth } from '@/lib/firebase'
 
 export function Header() {
+  const { user } = useAuth()
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth)
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }
+
   return (
     <header className="bg-white shadow-sm">
       <div className="container mx-auto px-4">
@@ -34,10 +47,20 @@ export function Header() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <span className="text-gray-800">Welcome, vish.adarsh01@gmail.com</span>
-            <Button className="bg-[#1a73e8] hover:bg-[#1557b0]">
-              Logout
-            </Button>
+            {user ? (
+              <>
+                <span className="text-gray-800">Welcome, {user.email}</span>
+                <Button onClick={handleSignOut} className="bg-[#1a73e8] hover:bg-[#1557b0]">
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Link href="/login" passHref>
+                <Button className="bg-[#1a73e8] hover:bg-[#1557b0]">
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

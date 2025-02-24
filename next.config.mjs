@@ -10,10 +10,22 @@ const nextConfig = {
           filename: 'static/css/[name].[contenthash].css',
           chunkFilename: 'static/css/[id].[contenthash].css',
         })
-      );
+      ),
+      config.externals.push({
+        'react-native-config': 'react-native-config',
+      })
     }
 
     return config;
+  },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',  // Allow all domains for demo purposes
+      },
+    ],
   },
 };
 
