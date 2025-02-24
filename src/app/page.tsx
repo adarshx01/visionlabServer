@@ -18,7 +18,8 @@ export default function Home() {
       <Hero />
       <WhatWeOffer />
       <HowItWorks />
-    
+      <Footer />
+
     </div>
   )
 }
