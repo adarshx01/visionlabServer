@@ -110,7 +110,7 @@ export default function ChatPage() {
 
     // Initial greeting
     setTimeout(() => {
-      const initialGreeting = "Hello, this is Aegis from the cybercrime cell, How can I assist you!";
+      const initialGreeting = "heyy, this is Aegis , How can I assist you!";
       speakMessage(initialGreeting);
     }, 1000);
   };
@@ -216,25 +216,6 @@ export default function ChatPage() {
     setMessages(prevMessages => [...prevMessages, botMessage]);
     await speakMessage(silenceMessage);
   };
-
-  // const startListening = () => {
-  //   if (recognitionRef.current && !isListening) {
-  //     try {
-  //       recognitionRef.current.start();
-  //     } catch (error) {
-  //       console.error('Error starting recognition:', error);
-  //     }
-  //   }
-  // };
-
-  // const stopListening = () => {
-  //   if (recognitionRef.current && isListening) {
-  //     recognitionRef.current.stop();
-  //   }
-  //   if (silenceTimeoutRef.current) {
-  //     clearTimeout(silenceTimeoutRef.current);
-  //   }
-  // };
 
   const handleSendMessage = async (message: string, type: 'chat' | 'report' = 'chat') => {
     if (!message.trim()) return;
@@ -386,69 +367,6 @@ Description: ${description}`,
     router.push(`/complaint?${queryParams}`);
 };
 
-  // const speakMessage = async (message: string) => {
-  //   return new Promise<void>((resolve) => {
-  //     if (!synthesisRef.current) {
-  //       console.error('Speech synthesis not initialized');
-  //       resolve();
-  //       return;
-  //     }
-
-  //     // Cancel any ongoing speech
-  //     synthesisRef.current.cancel();
-
-  //     // Stop listening while speaking
-  //     stopListening();
-
-  //     const utterance = new SpeechSynthesisUtterance(message);
-      
-  //     // Get available voices
-  //     const voices = synthesisRef.current.getVoices();
-      
-  //     // Try to find a female English voice
-  //     const femaleVoice = voices.find(voice => 
-  //       voice.name.includes('Female') || 
-  //       voice.name.includes('woman') || 
-  //       voice.name.includes('girl')
-  //     );
-
-  //     if (femaleVoice) {
-  //       utterance.voice = femaleVoice;
-  //     }
-
-  //     utterance.lang = 'en-US';
-  //     utterance.rate = 1.0;
-  //     utterance.pitch = 1.0;
-  //     utterance.volume = 1.0; // Maximum volume
-
-  //     utterance.onstart = () => {
-  //       console.log('Started speaking');
-  //     };
-      
-  //     utterance.onend = () => {
-  //       console.log('Finished speaking');
-  //       setTimeout(() => {
-  //         reactivateMicrophone();
-  //       }, 500);
-  //       resolve();
-  //     };
-
-  //     utterance.onerror = (event) => {
-  //       console.error('Speech synthesis error:', event);
-  //       resolve();
-  //     };
-
-  //     synthesisRef.current.speak(utterance);
-  //   });
-  // };
-
-  // const reactivateMicrophone = () => {
-  //   if (isVoiceMode && !isListening && !loading) {
-  //     console.log('Reactivating microphone');
-  //     startListening();
-  //   }
-  // };
-
   const handleConsent = () => {
     setConsentGiven(true);
     setDeclineMessage('');
@@ -493,7 +411,7 @@ Description: ${description}`,
   }, [isListening, loading, isVoiceMode]);
 
   return (
-    <div>
+    <div className="chat-page">
       {!consentGiven ? (
         <div className="consent-popup">
           <h2>Consent Required</h2>
@@ -508,7 +426,7 @@ Description: ${description}`,
         </div>
       ) : (
         <>
-          <h1 className='mx-auto text-center font-extrabold text-2xl font-serif'>Women's Safety Grievance Registration</h1>
+          <h1 className='mx-auto text-center font-extrabold text-2xl font-serif'>Related Complaint Registration </h1>
           <div className="video-container mx-auto w-fit">
             <video id="speakingVideo" width="320" height="240" muted autoPlay>
               <source src="/Chatbot.mp4" type="video/mp4" />
@@ -519,7 +437,7 @@ Description: ${description}`,
           <div className="chat-box mx-72 px-8 py-4 max-h-96 min-h-96 rounded-3xl shadow-2xl shadow-lime-400 border-2 overflow-y-auto">
             <p>
               <span className="border-2 rounded-lg px-2 py-1 inline-block bg-green-100">
-                <span className="font-extrabold">Bot: </span>Hello, this is Aegis from the cybercrime cell, How can I assist you!
+                <span className="font-extrabold">Bot: </span>Heyy , this is Aegis . How can I assist you!
               </span>
             </p>
             {messages.map((msg, idx) => (
@@ -569,6 +487,9 @@ Description: ${description}`,
         </>
       )}
       <style jsx>{`
+        .chat-page {
+          background-color:rgb(255, 255, 255); /* Change this to your desired background color */
+        }
         .consent-popup {
           position: fixed;
           top: 0;
@@ -588,4 +509,3 @@ Description: ${description}`,
     </div>
   );
 }
-
