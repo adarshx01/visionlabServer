@@ -13,7 +13,7 @@ export function Footer() {
             <div>
               <h4 className="font-semibold mb-2">Quick Links</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="hover:text-[#1a73e8]">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-[#FF0000]">Privacy Policy</a></li>
                 <li><a href="#" className="hover:text-[#1a73e8]">Terms of Service</a></li>
               </ul>
             </div>
