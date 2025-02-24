@@ -12,6 +12,7 @@ import { TypingBox } from "./TypingBox";
 import { AIAssistant } from "./AIAssistant";
 import { Leva, button, useControls } from "leva";
 import StoryInterface from '@/app/storify/story-interface';
+import FlashcardDeckvr from './3DflashCard';
 
 const itemPlacement = {
   default: {
@@ -31,6 +32,10 @@ const itemPlacement = {
     storify: {
       position: [3, 0.5, -1],
       rotation: [0, -(Math.PI / 360)*160, 0],
+    },
+    flashcard:{
+      position: [2.5, 0.5, -3.5],
+      rotation: [0, -(Math.PI / 360)*100, 0],
     }
   },
   alternative: {
@@ -48,6 +53,10 @@ const itemPlacement = {
     storify: {
       position: [5, 3, -9],
       rotation: [0, Math.PI / 24, 0],
+    },
+    flashcard:{
+      position: [0, 0.5, -1],
+      rotation: [0, -(Math.PI / 360)*160, 0],
     }
   }
 };
@@ -81,6 +90,13 @@ const VRScene = () => {
         distanceFactor={1}
       >
         <StoryInterface />
+      </Html>
+      <Html
+        transform
+        {...itemPlacement[classroom].flashcard}
+        distanceFactor={1}
+      >
+        <FlashcardDeckvr />
       </Html>
       <Environment preset="sunset" />
       <ambientLight intensity={0.8} color="pink" />
