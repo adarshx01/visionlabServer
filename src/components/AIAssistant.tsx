@@ -154,6 +154,7 @@ export function AIAssistant() {
   }
 
   const generateQuiz = (response: GeminiResponse) => {
+    console.log(geminiResponse)
     const questions: QuizQuestion[] = []
     const theory = response.theory.filter(t => t !== "NO DATA")
     

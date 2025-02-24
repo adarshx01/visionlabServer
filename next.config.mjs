@@ -25,6 +25,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**',  // Allow all domains for demo purposes
       },
+      {
+        protocol: 'http', 
+        hostname: '**', // Allow all hostnames
+      },
     ],
   },
 };

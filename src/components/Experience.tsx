@@ -11,6 +11,7 @@ import { Teacher } from "./Teacher";
 import { TypingBox } from "./TypingBox";
 import { AIAssistant } from "./AIAssistant";
 import { Leva, button, useControls } from "leva";
+import StoryInterface from '@/app/storify/story-interface';
 
 const itemPlacement = {
   default: {
@@ -27,6 +28,10 @@ const itemPlacement = {
       position: [-3, 0.7, -1],
       rotation: [0, Math.PI / 2.5, 0],
     },
+    storify: {
+      position: [3, 0.5, -1],
+      rotation: [0, -(Math.PI / 360)*160, 0],
+    }
   },
   alternative: {
     classroom: {
@@ -40,7 +45,11 @@ const itemPlacement = {
       position: [2, 0.7, -7],
       rotation: [0, -Math.PI / 4, 0],
     },
-  },
+    storify: {
+      position: [5, 3, -9],
+      rotation: [0, Math.PI / 24, 0],
+    }
+  }
 };
 
 // VR-enabled Scene component
@@ -65,6 +74,13 @@ const VRScene = () => {
         distanceFactor={1}
       >
         <AIAssistant />
+      </Html>
+      <Html
+        transform
+        {...itemPlacement[classroom].storify}
+        distanceFactor={1}
+      >
+        <StoryInterface />
       </Html>
       <Environment preset="sunset" />
       <ambientLight intensity={0.8} color="pink" />

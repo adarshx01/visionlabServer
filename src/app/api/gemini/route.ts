@@ -76,6 +76,7 @@ export async function POST(req: Request) {
 
     try {
       const parsedResponse = await retryWithBackoff(operation)
+      console.log('Gemini response:', parsedResponse)
       return NextResponse.json(parsedResponse)
     } catch (parseError) {
       console.error('Error parsing Gemini response:', parseError)
