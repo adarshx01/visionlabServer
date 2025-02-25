@@ -7,19 +7,30 @@ import { CustomContent } from '@/components/CustomContent'
 import { Tests } from '@/components/Tests'
 import { AIAssistant } from '@/components/AIAssistant'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BookOpen, Users, FileText, ClipboardList, Bot } from 'lucide-react'
+import { BookOpen, Users, FileText, ClipboardList, Bot, Mic } from 'lucide-react'
 import Link from 'next/link'
+import FlashcardDeck from './flashcards' // Adjust the import path as necessary
 
 export default function EducationPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isSavedDropdownOpen, setIsSavedDropdownOpen] = useState(false)
+  const [topic, setTopic] = useState('')
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen)
   }
 
+  const toggleSavedDropdown = () => {
+    setIsSavedDropdownOpen(!isSavedDropdownOpen)
+  }
+
+  const handleGenerate = () => {
+    setIsDropdownOpen(true)
+  }
+
   return (
-    <div className="min-h-screen bg-[#f8faff]">
-      <div className="min-h-screen bg-[#f8faff]">
+    <div className="min-h-screen bg-[#f8faff] relative">
+      <div className={`min-h-screen bg-[#f8faff] ${isDropdownOpen ? 'blur-sm' : ''}`}>
         <main className="relative container mx-auto px-4 py-8">
           <div className="absolute top-6 ml-40">
             <button
@@ -28,25 +39,10 @@ export default function EducationPage() {
               className="justify-center gap-2 items-center shadow-xl text-lg bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 
               before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full 
               before:bg-yellow-500 hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 
-              relative z-10 px-4 py-2 overflow-hidden border-2 rounded-full group"
+              relative z-20 px-4 py-2 overflow-hidden border-2 rounded-full group"
             >
               Flash Cards
             </button>
-            {isDropdownOpen && (
-              <div className="absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                  <Link href="/option1" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                    Option 1
-                  </Link>
-                  <Link href="/option2" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                    Option 2
-                  </Link>
-                  <Link href="/option3" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                    Option 3
-                  </Link>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* 3D Classroom Button - Positioned at Top Right */}
@@ -145,6 +141,66 @@ export default function EducationPage() {
           </Tabs>
         </main>
       </div>
+      {isDropdownOpen && (
+        <>
+          <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-3xl">
+              <h2 className="text-2xl font-bold mb-4">Flash Cards</h2>
+              <div className="flex items-center mb-4 space-x-2">
+                <input
+                  type="text"
+                  placeholder="Enter the topic"
+                  value={topic}
+                  onChange={(e) => setTopic(e.target.value)}
+                  className="flex-1 px-4 py-2 border rounded-l-md"
+                />
+                <button className="px-4 py-2 bg-gray-200 border-l border-gray-300 rounded-r-md">
+                  <Mic className="w-5 h-5 text-gray-600" />
+                </button>
+                <button
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  onClick={handleGenerate}
+                >
+                  Generate
+                </button>
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={toggleSavedDropdown}
+                    className="px-4 py-2 bg-green-500 text-white rounded-md"
+                  >
+                    Saved Flash Cards
+                  </button>
+                  {isSavedDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                      <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                        <Link href="/saved1" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                          Saved Flash Card 1
+                        </Link>
+                        <Link href="/saved2" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                          Saved Flash Card 2
+                        </Link>
+                        <Link href="/saved3" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                          Saved Flash Card 3
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <FlashcardDeck topic={topic} />
+              <button
+                type="button"
+                onClick={toggleDropdown}
+                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

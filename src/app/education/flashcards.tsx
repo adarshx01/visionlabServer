@@ -1,10 +1,11 @@
+
+
 "use client"
 
-import type React from "react"
-import { useState } from "react"
-import { motion, AnimatePresence, type PanInfo } from "framer-motion"
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence, type PanInfo } from 'framer-motion'
 import { Card, CardContent } from "@/components/ui/card"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface FlashcardProps {
   content: string
@@ -36,17 +37,31 @@ const Flashcard: React.FC<FlashcardProps> = ({ content, color, number, total }) 
   )
 }
 
-const flashcardData = [
-  { content: "What is the capital of France?", color: "hsl(210, 100%, 97%)" },
-  { content: "Who painted the Mona Lisa?", color: "hsl(180, 100%, 97%)" },
-  { content: "What is the largest planet in our solar system?", color: "hsl(150, 100%, 97%)" },
-  { content: "What year did World War II end?", color: "hsl(120, 100%, 97%)" },
-  { content: "Who wrote 'Romeo and Juliet'?", color: "hsl(90, 100%, 97%)" },
-]
+interface FlashcardDeckProps {
+  topic: string
+}
 
-export default function FlashcardDeck() {
+const FlashcardDeck: React.FC<FlashcardDeckProps> = ({ topic }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(0)
+  const [flashcardData, setFlashcardData] = useState([])
+
+  useEffect(() => {
+    // Simulate fetching flashcards based on the topic
+    const fetchFlashcards = async () => {
+      // Replace this with your actual data fetching logic
+      const data = [
+        { content: `What is ${topic}?`, color: "hsl(210, 100%, 97%)" },
+        { content: `Explain ${topic} in detail.`, color: "hsl(180, 100%, 97%)" },
+        { content: `What are the key points of ${topic}?`, color: "hsl(150, 100%, 97%)" },
+        { content: `How does ${topic} work?`, color: "hsl(120, 100%, 97%)" },
+        { content: `Why is ${topic} important?`, color: "hsl(90, 100%, 97%)" },
+      ]
+      setFlashcardData(data)
+    }
+
+    fetchFlashcards()
+  }, [topic])
 
   const pageFlipVariants = {
     enter: (direction: number) => ({
@@ -96,12 +111,14 @@ export default function FlashcardDeck() {
           onDragEnd={handleDragEnd}
           className="w-full h-full absolute"
         >
-          <Flashcard
-            content={flashcardData[currentIndex].content}
-            color={flashcardData[currentIndex].color}
-            number={currentIndex + 1}
-            total={flashcardData.length}
-          />
+          {flashcardData.length > 0 && (
+            <Flashcard
+              content={flashcardData[currentIndex].content}
+              color={flashcardData[currentIndex].color}
+              number={currentIndex + 1}
+              total={flashcardData.length}
+            />
+          )}
         </motion.div>
       </AnimatePresence>
       <button
@@ -121,3 +138,5 @@ export default function FlashcardDeck() {
     </div>
   )
 }
+
+export default FlashcardDeck
