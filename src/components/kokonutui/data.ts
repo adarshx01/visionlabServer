@@ -14,101 +14,147 @@ export interface CartItem extends Product {
 export const products: Product[] = [
   {
     id: "p1",
-    name: "Minimal Desk Lamp",
+    name: "The Joy Of X",
     description: "A sleek and modern desk lamp with adjustable brightness and color temperature.",
     price: 89,
     image:
-      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Lighting",
+      "/images/marketplace/thejoyofx.jpg",
+    category: "Maths",
   },
   {
     id: "p2",
-    name: "Ceramic Coffee Set",
+    name: "How To Not Be Wrong",
     description: "Handcrafted ceramic coffee set including 4 cups and a matching pour-over dripper.",
     price: 65,
     image:
-      "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Kitchenware",
+      "/images/marketplace/howtonotbewrong.jpg",
+    category: "Maths",
   },
   {
     id: "p3",
-    name: "Linen Throw Pillow",
+    name: "Basic Physics For Begginers",
     description: "Soft linen throw pillow with minimalist pattern design.",
     price: 45,
     image:
-      "https://images.unsplash.com/photo-1579656381226-5fc0f0100c3b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Home Decor",
+      "/images/marketplace/phy4.jpg",
+    category: "Physics",
   },
   {
     id: "p4",
-    name: "Wooden Wall Clock",
+    name: "Quantum Physics For Beginners",
     description: "Modern wooden wall clock with silent movement.",
     price: 79,
     image:
-      "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Home Decor",
+      "/images/marketplace/phy2.jpg",
+      category: "Physics",
   },
   {
     id: "p5",
-    name: "Concrete Planter",
+    name: "A Text Book Of Physical Chemistry",
     description: "Minimalist concrete planter perfect for succulents.",
     price: 34,
     image:
-      "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Plants",
+      "/images/marketplace/chem1.jpg",
+      category: "Chemistry",
   },
   {
     id: "p6",
-    name: "Glass Vase Set",
+    name: "Organic Chemistry",
     description: "Set of 3 minimalist glass vases in varying sizes.",
     price: 55,
     image:
-      "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Home Decor",
+     "/images/marketplace/chem2.jpg",
+     category: "Chemistry",
   },
   {
     id: "p7",
-    name: "Bamboo Organizer",
+    name: "History Of English Literature",
     description: "Desk organizer made from sustainable bamboo.",
     price: 42,
     image:
-      "https://images.unsplash.com/photo-1591129841117-3adfd313e34f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Office",
+      "/images/marketplace/eng1.jpg",
+        category: "English",
   },
   {
-    id: "p9",
-    name: "Marble Coasters",
+    id: "p8",
+    name: "English Literature",
     description: "Set of 4 marble coasters with cork backing.",
     price: 38,
     image:
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Kitchenware",
+      "/images/marketplace/eng2.jpg",
+      category: "English",
+  },
+  {
+    id: "p9",
+    name: "Core Java",
+    description: "Modern geometric brass bookends, set of 2.",
+    price: 68,
+    image:
+    "/images/marketplace/cs1.jpg",
+    category: "Computer Science",
   },
   {
     id: "p10",
-    name: "Brass Bookends",
-    description: "Modern geometric brass bookends, set of 2.",
-    price: 68,
-    image: "https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Office",
-  },
-  {
-    id: "p11",
-    name: "Ceramic Plant Pot",
+    name: "Object Oriented Programming in C++" ,
     description: "Handmade ceramic plant pot with drainage hole.",
     price: 48,
     image:
-      "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Plants",
+      "/images/marketplace/cs2.jpg",
+      category: "Computer Science",
   },
   {
-    id: "p12",
-    name: "Wall Mirror",
+    id: "p11",
+    name: "The Biology Book",
     description: "Round wall mirror with minimal metal frame.",
     price: 120,
     image:
-      "https://images.unsplash.com/photo-1618220179428-22790b461013?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    category: "Home Decor",
+      "/images/marketplace/bio2.jpg",
+      category: "Biology",
+  },
+  {
+    id: "p12",
+    name: "General Biology",
+    description: "Round wall mirror with minimal metal frame.",
+    price: 120,
+    image:
+    "/images/marketplace/bio4.jpg",
+    category: "Biology",
+  },
+  {
+    id: "p13",
+    name: "Ancient Indian History",
+    description: "Round wall mirror with minimal metal frame.",
+    price: 120,
+    image:
+    "/images/marketplace/his1.jpg",
+    category: "History",
+  },
+  {
+    id: "p14",
+    name: "Global History Of War",
+    description: "Round wall mirror with minimal metal frame.",
+    price: 120,
+    image:
+    "/images/marketplace/his2.jpg",
+    category: "History",
+  },
+  {
+    id: "p15",
+    name: "The Economics Book",
+    description: "Round wall mirror with minimal metal frame.",
+    price: 120,
+    image:
+    "/images/marketplace/eco1.jpg",
+    category: "Economics",
+  },
+  {
+    id: "p16",
+    name: "The Little Book Of Economics",
+    description: "Round wall mirror with minimal metal frame.",
+    price: 120,
+    image:
+    "/images/marketplace/eco2.jpg",
+    category: "Economics",
   },
 ]
 
