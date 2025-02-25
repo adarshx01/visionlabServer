@@ -32,7 +32,7 @@ export default function MinimalShop() {
   const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
   return (
-    <div className="h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="h-100% bg-zinc-50 dark:bg-zinc-950">
       <TopBar cartItemCount={cart.length} onCartClick={() => setIsCartOpen(true)} onSearch={setSearchQuery} />
 
       <div className="mx-auto px-2 pt-12 pb-16">

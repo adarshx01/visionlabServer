@@ -44,6 +44,9 @@ export function Header() {
             <Link href="/contact" className="text-gray-800 hover:text-[#1a73e8]">
               Contact Us
             </Link>
+            <Link href="/dashboard" className="text-gray-800 hover:text-[#1a73e8]">
+              Dashboard
+            </Link>
           </nav>
 
           <div className="flex items-center space-x-4">
