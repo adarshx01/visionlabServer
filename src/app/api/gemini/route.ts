@@ -15,14 +15,14 @@ const getPromptForType = (query: string, type: string) => {
       Ensure each array has at least 3-5 detailed items. If no information is available, include "NO DATA" in the array.
     `,
     media: `
-      Provide educational image and video links about: "${query}"
+      Provide video links strictly from the google search result or Search(not from other website): "${query}"
       Return in this exact JSON format:
       {
-        "relatedImageLinks": ["url1", "url2", ...],
+        "relatedImageLinks": [just image keyword],
         "relatedVideoLinks": ["youtube_url1", "youtube_url2", ...]
       }
-      For images, provide actual Google Images URLs.
-      For videos, provide actual YouTube video URLs.
+      For images, provide single topic to search for.
+      For videos, provide actual YouTube Search video URLs.
       Include 3-5 links for each. If none available, include "NO DATA" in the array.
     `,
     related: `

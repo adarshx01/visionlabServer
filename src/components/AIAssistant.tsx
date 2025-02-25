@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -63,7 +63,20 @@ export function AIAssistant() {
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({})
   const [quizSubmitted, setQuizSubmitted] = useState(false)
 
+  // Log initial component mount
+  useEffect(() => {
+    console.log('AIAssistant component mounted');
+  }, []);
+
+  // Log whenever geminiResponse changes
+  useEffect(() => {
+    if (geminiResponse) {
+      console.log('Gemini Response Updated:', geminiResponse);
+    }
+  }, [geminiResponse]);
+
   const fetchPartialData = async (query: string, type: string) => {
+    console.log(`Fetching ${type} data for query: "${query}"`);
     try {
       const response = await fetch('/api/gemini', {
         method: 'POST',
@@ -78,6 +91,7 @@ export function AIAssistant() {
       }
 
       const data = await response.json()
+      console.log(`${type} data retrieved:`, data);
       return data
     } catch (err) {
       console.error(`Error fetching ${type}:`, err)
@@ -86,6 +100,7 @@ export function AIAssistant() {
   }
 
   const fetchAllData = async (query: string) => {
+    console.log('Starting fetchAllData for query:', query);
     setLoading(true)
     setError(null)
     let completeResponse: GeminiResponse = {
@@ -108,23 +123,28 @@ export function AIAssistant() {
       ]
 
       for (const { type, key } of fetchOperations) {
+        console.log(`Starting fetch operation for ${key}`);
         setLoadingStates(prev => ({ ...prev, [key]: true }))
         const data = await fetchPartialData(query, type)
         setLoadingStates(prev => ({ ...prev, [key]: false }))
         completeResponse = { ...completeResponse, ...data }
+        console.log(`Updated completeResponse after ${key} fetch:`, completeResponse);
       }
 
       return completeResponse
     } catch (err) {
+      console.error('Error in fetchAllData:', err);
       setError('Some content failed to load. Please try refreshing.')
       return null
     } finally {
       setLoading(false)
+      console.log('fetchAllData completed');
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('Form submitted with input:', input);
     if (!input.trim()) return
 
     const newMessage = {
@@ -140,6 +160,7 @@ export function AIAssistant() {
     setSelectedAnswers({})
 
     const response = await fetchAllData(input)
+    console.log('Final response from fetchAllData:', response);
     
     if (response) {
       setGeminiResponse(response)
@@ -154,7 +175,7 @@ export function AIAssistant() {
   }
 
   const generateQuiz = (response: GeminiResponse) => {
-    console.log(geminiResponse)
+    console.log('Generating quiz from response:', response);
     const questions: QuizQuestion[] = []
     const theory = response.theory.filter(t => t !== "NO DATA")
     
@@ -175,6 +196,7 @@ export function AIAssistant() {
       })
     }
     
+    console.log('Generated quiz questions:', questions);
     setQuiz(questions)
   }
 
@@ -187,11 +209,13 @@ export function AIAssistant() {
       timestamp: Date.now()
     }
     
+    console.log('Saving new note:', newNote);
     setNotes(prev => [...prev, newNote])
     setCurrentNote('')
   }
 
   const handleAnswerSelect = (questionIndex: number, optionIndex: number) => {
+    console.log(`Selected answer: Question ${questionIndex}, Option ${optionIndex}`);
     setSelectedAnswers(prev => ({
       ...prev,
       [questionIndex]: optionIndex
@@ -199,10 +223,12 @@ export function AIAssistant() {
   }
 
   const handleQuizSubmit = () => {
+    console.log('Quiz submitted with answers:', selectedAnswers);
     setQuizSubmitted(true)
   }
 
   const renderContent = (items: string[]) => {
+    console.log('Rendering content items:', items);
     if (!items?.length || (items.length === 1 && items[0] === "NO DATA")) {
       return <p className="text-gray-500 italic">No data available</p>
     }
@@ -216,36 +242,49 @@ export function AIAssistant() {
     )
   }
 
+  // Fixed renderMedia function to properly handle images
   const renderMedia = (urls: string[], isVideo: boolean = false) => {
+    console.log(`Rendering ${isVideo ? 'videos' : 'images'}:`, urls);
     if (!urls?.length || (urls.length === 1 && urls[0] === "NO DATA")) {
       return <p className="text-gray-500 italic">No media available</p>
     }
 
     return (
       <div className="grid grid-cols-2 gap-4">
-        {urls.map((url, index) => (
-          <div key={index} className="relative h-40">
-            {isVideo ? (
-              <iframe
-                className="w-full h-full rounded-md"
-                src={`https://www.youtube.com/embed/${url.split('v=')[1]}`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            ) : (
-              <div className="relative h-full w-full">
-                <Image
-                  src={url}
-                  alt={`Media ${index + 1}`}
-                  fill
-                  className="object-cover rounded-md"
+        {urls.map((url, index) => {
+          // Log each URL being processed
+          console.log(`Processing ${isVideo ? 'video' : 'image'} URL:`, url);
+          
+          return (
+            <div key={index} className="relative h-40">
+              {isVideo ? (
+                <iframe
+                  className="w-full h-full rounded-md"
+                  src={`https://www.youtube.com/embed/${url.split('v=')[1] || url}`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
                 />
-              </div>
-            )}
-          </div>
-        ))}
+              ) : (
+                // For images, use a regular img tag instead of Next.js Image component
+                // to handle external URLs without domain configuration
+                <div className="relative h-full w-full">
+                  <img
+                    src={url}
+                    alt={`Media ${index + 1}`}
+                    className="object-cover rounded-md w-full h-full"
+                    onError={(e) => {
+                      console.error(`Error loading image: ${url}`);
+                      e.currentTarget.src = '/placeholder-image.jpg'; // Fallback image
+                      e.currentTarget.onerror = null; // Prevent infinite error loop
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
-    )
+    );
   }
 
   const renderLoadingSpinner = (type: keyof LoadingStates) => {

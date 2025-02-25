@@ -89,7 +89,7 @@ const VRScene = () => {
         {...itemPlacement[classroom].storify}
         distanceFactor={1}
       >
-        <StoryInterface />
+        <div className='max-w-[60rem]'><StoryInterface /></div>
       </Html>
       <Html
         transform

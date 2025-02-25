@@ -3,7 +3,7 @@ export async function GET(req: Request) {
   const text = url.searchParams.get('text') || '';
   const teacher = url.searchParams.get('teacher') || 'Swara';
 
-  const voice = teacher === 'Swara' ? '21m00Tcm4TlvDq8ikWAM' : 'AZnzlk1XvdvUeBnXmlld';
+  const voice = teacher === 'Swara' ? '1qEiC6qsybMkmnNdVMbK ' : 'zgqefOY5FPQ3bB7OZTVR';
 
   try {
     const res = await fetch('https://api.elevenlabs.io/v1/text-to-speech/' + voice, {
@@ -15,10 +15,10 @@ export async function GET(req: Request) {
       },
       body: JSON.stringify({
         text: text,
-        model_id: "eleven_monolingual_v1",
+        model_id: "eleven_flash_v2_5",
         voice_settings: {
-          stability: 0.9,
-          similarity_boost: 0.9
+          stability: 4,
+          similarity_boost: 3
         }
       })
     });
