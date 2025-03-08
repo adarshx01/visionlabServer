@@ -1,24 +1,26 @@
 // firebase.js
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from 'firebase/storage';
+import { getDatabase } from "firebase/database";
+import { getStorage } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDK9s_8Zejb9mjkFAQXCSuL6FchKQnaOnY",
-  authDomain: "aegis-e265d.firebaseapp.com",
-  projectId: "aegis-e265d",
-  storageBucket: "aegis-e265d.appspot.com",
-  messagingSenderId: "167192758124",
-  appId: "1:167192758124:web:e6b6e1c83fc34d73d89549",
-  measurementId: "G-7C3FQ9GS70"
+  apiKey: "AIzaSyDKVQ-3S48-PNhPQVWdEoOaCBI4qbPdddA",
+  authDomain: "inkrit-3ebcf.firebaseapp.com",
+  databaseURL: "https://inkrit-3ebcf-default-rtdb.firebaseio.com",
+  projectId: "inkrit-3ebcf",
+  storageBucket: "inkrit-3ebcf.appspot.com",
+  messagingSenderId: "440105175644",
+  appId: "1:440105175644:web:d2c8a63530207a38e67499",
+  measurementId: "G-5S36EFQKVM"
 };
-
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Get Firestore instance
-const db = getFirestore(app);
+// Get Firebase instances
+const db = getDatabase(app);
 const storage = getStorage(app);
+const auth = getAuth(app);
 
-export { db , storage};
+export { db, auth, storage };

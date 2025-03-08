@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -56,9 +57,11 @@ export function ClassRooms() {
           <Card key={classItem.id}>
             <CardContent className="p-6">
               <h3 className="text-xl font-semibold mb-4">{classItem.name}</h3>
-              <Button className="w-full bg-[#1a73e8] hover:bg-[#1557b0]">
-                Enter Classroom
-              </Button>
+              <Link href={`/classroom/${classItem.id}`}>
+                <Button className="w-full bg-[#1a73e8] hover:bg-[#1557b0]">
+                  Enter Classroom
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         ))}

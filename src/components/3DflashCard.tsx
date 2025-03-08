@@ -1,10 +1,49 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence, type PanInfo } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { ChevronLeft, ChevronRight, PlusCircle, Save } from "lucide-react"
+import { initializeApp } from "firebase/app"
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  getDocs, 
+  query, 
+  orderBy, 
+  serverTimestamp
+} from "firebase/firestore"
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDKVQ-3S48-PNhPQVWdEoOaCBI4qbPdddA",
+  authDomain: "inkrit-3ebcf.firebaseapp.com",
+  databaseURL: "https://inkrit-3ebcf-default-rtdb.firebaseio.com",
+  projectId: "inkrit-3ebcf",
+  storageBucket: "inkrit-3ebcf.appspot.com",
+  messagingSenderId: "440105175644",
+  appId: "1:440105175644:web:d2c8a63530207a38e67499",
+  measurementId: "G-5S36EFQKVM"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
+
+interface FlashcardData {
+  content: string
+  color: string
+}
+
+interface FlashcardSet {
+  id?: string
+  topic: string
+  cards: FlashcardData[]
+  createdAt?: any
+}
 
 interface FlashcardProps {
   content: string
@@ -36,17 +75,115 @@ const Flashcard: React.FC<FlashcardProps> = ({ content, color, number, total }) 
   )
 }
 
-const flashcardData = [
-  { content: "What is the capital of France?", color: "hsl(210, 100%, 97%)" },
-  { content: "Who painted the Mona Lisa?", color: "hsl(180, 100%, 97%)" },
-  { content: "What is the largest planet in our solar system?", color: "hsl(150, 100%, 97%)" },
-  { content: "What year did World War II end?", color: "hsl(120, 100%, 97%)" },
-  { content: "Who wrote 'Romeo and Juliet'?", color: "hsl(90, 100%, 97%)" },
-]
-
-export default function FlashcardDeckvr() {
+export default function FlashcardDeck3D() {
+  const [topic, setTopic] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(0)
+  const [flashcardData, setFlashcardData] = useState<FlashcardData[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [savedSets, setSavedSets] = useState<FlashcardSet[]>([])
+  
+  const colors = [
+    "hsl(210, 100%, 97%)", "hsl(180, 100%, 97%)", 
+    "hsl(150, 100%, 97%)", "hsl(120, 100%, 97%)",
+    "hsl(90, 100%, 97%)", "hsl(60, 100%, 97%)",
+    "hsl(30, 100%, 97%)", "hsl(0, 100%, 97%)"
+  ]
+  
+  useEffect(() => {
+    fetchSavedFlashcardSets()
+  }, [])
+  
+  const fetchSavedFlashcardSets = async () => {
+    try {
+      const q = query(collection(db, "flashcardSets"), orderBy("createdAt", "desc"))
+      const querySnapshot = await getDocs(q)
+      
+      const sets: FlashcardSet[] = []
+      querySnapshot.forEach((doc) => {
+        sets.push({ id: doc.id, ...doc.data() } as FlashcardSet)
+      })
+      
+      setSavedSets(sets)
+    } catch (error) {
+      console.error("Error fetching flashcard sets:", error)
+    }
+  }
+  
+  const generateFlashcards = async () => {
+    if (!topic.trim()) return
+    
+    setIsLoading(true)
+    try {
+      // Use the api route instead of direct API call
+      const response = await fetch('/api/generate-flashcards', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ topic })
+      })
+      
+      if (!response.ok) {
+        throw new Error(`API returned ${response.status}`)
+      }
+      
+      const data = await response.json()
+      
+      if (data.cards && Array.isArray(data.cards)) {
+        // Process the cards from our API
+        const cards = data.cards.map((content: string, index: number) => ({
+          content,
+          color: colors[index % colors.length]
+        }))
+        
+        setFlashcardData(cards)
+        setCurrentIndex(0)
+      } else {
+        throw new Error("Invalid response format")
+      }
+    } catch (error) {
+      console.error("Error generating flashcards:", error)
+      // Fallback to dummy data if API fails
+      const dummyData = [
+        { content: `What is ${topic}?`, color: colors[0] },
+        { content: `Explain ${topic} in simple terms.`, color: colors[1] },
+        { content: `Key concepts of ${topic}:`, color: colors[2] },
+        { content: `Why is ${topic} important?`, color: colors[3] },
+      ]
+      setFlashcardData(dummyData)
+      setCurrentIndex(0)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  
+  const saveFlashcardSet = async () => {
+    if (flashcardData.length === 0 || !topic.trim()) return
+    
+    try {
+      // Add a new document to the "flashcardSets" collection
+      await addDoc(collection(db, "flashcardSets"), {
+        topic,
+        cards: flashcardData,
+        createdAt: serverTimestamp()
+      })
+      
+      // Refresh the saved sets list
+      await fetchSavedFlashcardSets()
+      
+      alert("Flashcard set saved successfully!")
+    } catch (error) {
+      console.error("Error saving flashcard set:", error)
+      alert("Error saving flashcard set. Please try again.")
+    }
+  }
+  
+  const loadFlashcardSet = (set: FlashcardSet) => {
+    setTopic(set.topic)
+    setFlashcardData(set.cards)
+    setCurrentIndex(0)
+  }
 
   const pageFlipVariants = {
     enter: (direction: number) => ({
@@ -80,44 +217,110 @@ export default function FlashcardDeckvr() {
   }
 
   return (
-    <div className="relative w-full max-w-md mx-auto h-64 md:h-80 perspective-1000">
-      <AnimatePresence initial={false} custom={direction}>
-        <motion.div
-          key={currentIndex}
-          custom={direction}
-          variants={pageFlipVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.3}
-          onDragEnd={handleDragEnd}
-          className="w-full h-full absolute"
-        >
-          <Flashcard
-            content={flashcardData[currentIndex].content}
-            color={flashcardData[currentIndex].color}
-            number={currentIndex + 1}
-            total={flashcardData.length}
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <h1 className="text-3xl font-bold mb-6 text-center">3D Flashcard Generator</h1>
+      
+      <div className="flex flex-col md:flex-row gap-4 mb-8">
+        <div className="flex-grow">
+          <Input
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder="Enter a topic (e.g. Quantum Physics, French Revolution, JavaScript)"
+            className="w-full"
           />
-        </motion.div>
-      </AnimatePresence>
-      <button
-        onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full shadow-md z-10 transition"
-        disabled={currentIndex === 0}
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
-      <button
-        onClick={() => setCurrentIndex(Math.min(flashcardData.length - 1, currentIndex + 1))}
-        className="absolute -right-96 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full shadow-md z-10 transition"
-        disabled={currentIndex === flashcardData.length - 1}
-      >
-        <ChevronRight className="w-6 h-6" />
-      </button>
+        </div>
+        <Button 
+          onClick={generateFlashcards} 
+          disabled={isLoading || !topic.trim()}
+          className="flex items-center gap-2"
+        >
+          <PlusCircle className="w-4 h-4" />
+          {isLoading ? "Generating..." : "Generate Flashcards"}
+        </Button>
+      </div>
+      
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">Saved Flashcard Sets</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {savedSets.map((set) => (
+            <Card 
+              key={set.id} 
+              className="cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => loadFlashcardSet(set)}
+            >
+              <CardContent className="p-4">
+                <div className="font-medium">{set.topic}</div>
+                <div className="text-sm text-gray-500">{set.cards.length} cards</div>
+              </CardContent>
+            </Card>
+          ))}
+          {savedSets.length === 0 && (
+            <p className="text-gray-500 col-span-full text-center py-4">No saved flashcard sets yet.</p>
+          )}
+        </div>
+      </div>
+      
+      {flashcardData.length > 0 && (
+        <>
+          <div className="relative w-full max-w-md mx-auto h-64 md:h-80 perspective-1000 mb-6">
+            <AnimatePresence initial={false} custom={direction}>
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={pageFlipVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.3}
+                onDragEnd={handleDragEnd}
+                className="w-full h-full absolute"
+              >
+                <Flashcard
+                  content={flashcardData[currentIndex].content}
+                  color={flashcardData[currentIndex].color}
+                  number={currentIndex + 1}
+                  total={flashcardData.length}
+                />
+              </motion.div>
+            </AnimatePresence>
+            
+            <button
+              onClick={() => {
+                setDirection(-1)
+                setCurrentIndex(Math.max(0, currentIndex - 1))
+              }}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full shadow-md z-10 transition"
+              disabled={currentIndex === 0}
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            
+            <button
+              onClick={() => {
+                setDirection(1)
+                setCurrentIndex(Math.min(flashcardData.length - 1, currentIndex + 1))
+              }}
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full shadow-md z-10 transition"
+              disabled={currentIndex === flashcardData.length - 1}
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+          
+          <div className="flex justify-center">
+            <Button 
+              onClick={saveFlashcardSet}
+              className="flex items-center gap-2"
+            >
+              <Save className="w-4 h-4" />
+              Save Flashcard Set
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   )
 }

@@ -74,7 +74,7 @@ export function Courses() {
                 </p>
                 <Button 
                   className="w-full bg-[#1a73e8] hover:bg-[#1557b0]"
-                  onClick={() => window.location.href = `/courses/${selectedCourse.id}/${level.toLowerCase()}`}
+                  onClick={() => window.location.href = `/education/${selectedCourse.title}/${level.toLowerCase()}`}
                 >
                   Start Learning
                 </Button>

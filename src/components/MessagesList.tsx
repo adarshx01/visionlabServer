@@ -139,13 +139,14 @@ export const MessagesList = () => {
     >
       {messages.length === 0 && (
         <div className="h-full w-full grid place-content-center text-center">
-          <h2 className="text-8xl font-bold text-white/90 italic">
-            AI Class
+          <h4 className="text-6xl font-bold text-white/90 italic">
+            VisionLab
             <br />
-            Your Digital Classroom
-          </h2>
-          <h2 className="text-8xl font-bold font-hindi text-red-600/90 italic">
-            GiftedBooks
+            Virtual testing environment</h4>
+          <h2 className="text-5xl font-bold mt-8 font-hindi text-red-600/90 italic">
+            {/* विज़नलैब */}
+            {/* <br /> */}
+            वर्चुअल परीक्षण परिवेश
           </h2>
         </div>
       )}
