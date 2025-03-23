@@ -18,7 +18,7 @@ export const BoardSettings = () => {
 
   return (
     <>
-      <div className="absolute right-0 bottom-full flex flex-row gap-10 mb-20">
+      <div className="absolute right-0 bottom-full flex flex-row gap-10 mb-20 ">
         {teachers.map((guru, idx) => (
           <div
             key={idx}
@@ -46,7 +46,7 @@ export const BoardSettings = () => {
           } py-4 px-10 text-4xl rounded-full transition-colors duration-500 backdrop-blur-md`}
           onClick={() => setClassroom("default")}
         >
-          Default classroom
+          SciFi Lab
         </button>
         <button
           className={` ${
@@ -56,7 +56,7 @@ export const BoardSettings = () => {
           } py-4 px-10 text-4xl rounded-full transition-colors duration-500 backdrop-blur-md`}
           onClick={() => setClassroom("alternative")}
         >
-          Alternative classroom
+          Home Lab
         </button>
       </div>
       <div className="absolute left-0 top-full flex flex-row gap-2 mt-20">

@@ -11,52 +11,46 @@ import { Teacher } from "./Teacher";
 import { TypingBox } from "./TypingBox";
 import { AIAssistant } from "./AIAssistant";
 import { Leva, button, useControls } from "leva";
-import StoryInterface from '@/app/storify/story-interface';
-import FlashcardDeckvr from './3DflashCard';
+import { Scale } from 'lucide-react';
+import  SciFiCamera  from '@/components/TestCamera/page';
 
 const itemPlacement = {
   default: {
     classroom: {
       position: [0.2, -1.7, -2],
+      scale: 0.02,
     },
     teacher: {
-      position: [-1, -1.7, -3],
+      position: [-1, -1.6, -3],
     },
     board: {
-      position: [0.45, 0.382, -6],
+      position: [0.2, 0.382, -6.5],
     },
     aiAssistant: {
-      position: [-3, 0.7, -1],
-      rotation: [0, Math.PI / 2.5, 0],
+      position: [3, 0.7, -1],
+      rotation: [0, -Math.PI / 2.5, 0],
     },
-    storify: {
-      position: [3, 0.5, -1],
-      rotation: [0, -(Math.PI / 360)*160, 0],
-    },
-    flashcard:{
-      position: [2.5, 0.5, -3.5],
-      rotation: [0, -(Math.PI / 360)*100, 0],
+    scifiCamera: {
+      position: [-7, 1, 0],
+      rotation: [0, Math.PI / 2.2,0],
+      scale: 3,
     }
   },
   alternative: {
     classroom: {
-      position: [0.3, -1.7, -1.5],
-      rotation: [0, degToRad(-90), 0],
-      scale: 0.4,
+      position: [3, -1.7, -2.4],
+      rotation: [0, degToRad(0), 0],
+      scale: 1.3,
     },
-    teacher: { position: [-1, -1.7, -3] },
-    board: { position: [1.4, 0.84, -8] },
+    teacher: { position: [-0.4, -1.6, -3] },
+    board: { position: [-6, 0.84, -2],rotation: [0, Math.PI / 2, 0] },
     aiAssistant: {
       position: [2, 0.7, -7],
       rotation: [0, -Math.PI / 4, 0],
     },
-    storify: {
-      position: [5, 3, -9],
-      rotation: [0, Math.PI / 24, 0],
-    },
-    flashcard:{
-      position: [0, 0.5, -1],
-      rotation: [0, -(Math.PI / 360)*160, 0],
+    scifiCamera: {
+      position: [2, 0.3, -1.1],
+      rotation: [0, -Math.PI / 4.23,0],
     }
   }
 };
@@ -86,23 +80,20 @@ const VRScene = () => {
       </Html>
       <Html
         transform
-        {...itemPlacement[classroom].storify}
+        {...itemPlacement[classroom].scifiCamera}
         distanceFactor={1}
       >
-        <div className='max-w-[60rem]'><StoryInterface /></div>
-      </Html>
-      <Html
-        transform
-        {...itemPlacement[classroom].flashcard}
-        distanceFactor={1}
-      >
-        <FlashcardDeckvr />
+        <SciFiCamera />
       </Html>
       <Environment preset="sunset" />
       <ambientLight intensity={0.8} color="pink" />
 
-      <Gltf
+      {/* <Gltf
         src={`/models/classroom_${classroom}.glb`}
+        {...itemPlacement[classroom].classroom}
+      /> */}
+      <Gltf
+        src={`/models/scifi_room_${classroom}.glb`}
         {...itemPlacement[classroom].classroom}
       />
       <Teacher

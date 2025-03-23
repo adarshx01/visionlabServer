@@ -134,12 +134,12 @@ export const MessagesList = () => {
         classroom === "default"
           ? "w-[1288px] h-[676px]"
           : "w-[2528px] h-[856px]"
-      } p-8 overflow-y-auto flex flex-col space-y-8 bg-transparent opacity-80`}
+      } p-8 overflow-y-auto flex flex-col space-y-8  opacity-80  bg-white/60 backdrop-blur-md rounded-3xl`}
       ref={container}
     >
       {messages.length === 0 && (
         <div className="h-full w-full grid place-content-center text-center">
-          <h4 className="text-6xl font-bold text-white/90 italic">
+          <h4 className="text-6xl font-bold text-black italic">
             VisionLab
             <br />
             Virtual testing environment</h4>
